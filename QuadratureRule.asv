@@ -1,0 +1,25 @@
+clear
+clc
+m = 32
+for j = 1:m
+    x(j)= cos(((2*j - 1)*pi)/(2*m))
+end
+syms z
+for i = 0:m-1
+    f = z^i
+    v(i+1) = int(f,x(m),x(1))
+end
+x2 = x.'
+v2 = v.'
+V = vander(x2)
+V2 = fliplr(V)
+Vt = V2.'
+w = inv(Vt)*v2
+syms z
+f2 = symfun(1/(1+25*z^2), z)
+f3 = w(1).*f2(x(1))
+for k = 2:m
+    f3 = f3 + w(k).*f2(x(k))
+end
+format long
+double(f3)
